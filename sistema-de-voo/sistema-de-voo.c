@@ -154,42 +154,6 @@ scanf("%d", &tripulacao[i].cargo);
 getchar();
 }
 
-void CadastroVoo(dados_voo voo[500],int i){
-//improvisado vai ser gerado automaticamente
-printf("Digite o codigo do voo: ");
-scanf("%s", voo[i].codigo_voo);
-
-printf("Digite o dia,mes e ano(ex:06/12/2024): ");
-fgets(voo[i].cadastroData.dia,11,stdin);
-voo[i].cadastroData.dia[strcspn(voo[i].cadastroData.dia, "\n")] = 0;
-
-printf("Digite as horas(ex:20:00): ");
-fgets(voo[i].cadastroData.hora,6,stdin);
-voo[i].cadastroData.hora[strcspn(voo[i].cadastroData.hora, "\n")] = 0;
-
-printf("Digite de onde o aviao esta partindo: ");
-fgets(voo[i].origem,201,stdin);
-voo[i].origem[strcspn(voo[i].origem, "\n")] = 0;
-
-printf("Digite o destino: ");
-fgets(voo[i].destino,201,stdin);
-voo[i].destino[strcspn(voo[i].destino, "\n")] = 0;
-
-//essa parte sera do codigo do aviao,piloto,copiloto e comissaro (tera uma funcao para isso depois)
-
-
-
-
-
-//status tera uma funcao para verficar se esta ativo ou não
-printf("Digite 1 se o status do aviao esta ativo ou 2 se esta inativo: ");
-scanf("%d", &voo[i].status);
-
-printf("Digite a tarifa do aviao: ");
-scanf("%f", &voo[i].tarifa);
-
-}
-
 // Função principal
 int main() {
 int escolha = 10, i_passageiros = 0, i_tripulacao = 0,i_voo;
@@ -214,11 +178,6 @@ break;
 case 2:
 CadastroTripulacao(tripulacao, i_tripulacao);
 i_tripulacao++;
-break;
-
-case 3:
-CadastroVoo(voo, i_voo);
-i_voo++;
 break;
 
 case 0:
