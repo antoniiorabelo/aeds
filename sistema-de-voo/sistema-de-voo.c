@@ -184,7 +184,7 @@ case 0:
 printf("Encerrando o cadastramento.\n");
 break;
 default:
-printf("Opção inválida.\n");
+printf("Opção invalida.\n");
 break;
 }
 }
