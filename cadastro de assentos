@@ -1,1 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
+#define MAX_ASSENTOS 100
+#define MAX_VOOS 100
+
+typedef struct {
+    int numero_assento;
+    char codigo_voo[10];
+    int status; // 1 = Disponível, 0 = não disponivel 
+} dados_assento;
+
+typedef struct {
+    char codigo_voo[10];
+} dados_voo;
+
+// Função de cadastro de assentos
+void CadastroAssentos(dados_assento assentos[MAX_ASSENTOS], dados_voo voos[MAX_VOOS], int *i_assentos, int i_voo) {
+    int num_assentos;
+    printf("\nCadastro de Assentos para o Voo %s\n", voos[i_voo].codigo_voo);
+    printf("Digite o número de assentos a serem cadastrados: ");
+    scanf("%d", &num_assentos);
+
+    // Verifica se tem o espaço suficiente no assento 
+    if (*i_assentos + num_assentos > MAX_ASSENTOS) {
+        printf("Erro: Não há espaço suficiente para cadastrar mais assentos.\n");
+        return;
+    }
+
+    for (int i = 0; i < num_assentos; i++) {
+        assentos[*i_assentos + i].numero_assento = i + 1;
+        strcpy(assentos[*i_assentos + i].codigo_voo, voos[i_voo].codigo_voo);
+        assentos[*i_assentos + i].status = 1;
+
+        printf("\nAssento %d do voo %s cadastrado com sucesso!\n",
+               assentos[*i_assentos + i].numero_assento,
+               voos[i_voo].codigo_voo);
+    }
+
+    
+    *i_assentos += num_assentos;
+}
+
+int main() {
+    dados_assento assentos[MAX_ASSENTOS];
+    dados_voo voos[MAX_VOOS];
+    int i_assentos = 0; 
+    int i_voo;
+
+    // Simulação de dados de voos {strcpy(voos[0].codigo_voo, "AB123");}
+
+    // Usuário escolhe o voo para cadastrar os assentos
+    printf("Digite o número do voo para cadastrar os assentos (0 a 1): ");
+    scanf("%d", &i_voo);
+
+    if (i_voo < 0 || i_voo >= MAX_VOOS) {
+        printf("Voo inválido\n");
+        return 1;
+    }
+
+    CadastroAssentos(assentos, voos, &i_assentos, i_voo);
+
+    return 0;
+}
