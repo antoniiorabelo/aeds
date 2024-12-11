@@ -1,0 +1,96 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_ASSENTOS 100
+#define MAX_RESERVAS 100
+
+typedef struct {
+    int numero_assento;
+    char codigo_voo[10];
+    int status; // 1 = vazio 0 = Ocupado
+} dados_assento;
+
+typedef struct {
+    char codigo_voo[10];
+    int tarifa;
+} dados_voo;
+
+typedef struct {
+    char codigo_voo[10];
+    int numero_assento;
+    char codigo_passageiro[10];
+} dados_reserva;
+
+void BaixaReserva(dados_assento assentos[MAX_ASSENTOS], int total_assentos, 
+                  dados_voo voos[], int total_voos, 
+                  dados_reserva reservas[MAX_RESERVAS], int *total_reservas) {
+    char codigo_voo[10];
+    int numero_assento;
+    int encontrado = 0;
+
+    printf("\nDigite o código do voo: ");
+    scanf("%s", codigo_voo);
+
+    printf("Digite o número do assento a ser liberado: ");
+    scanf("%d", &numero_assento);
+
+    // Verifica se o assento tem na reserva
+    for (int i = 0; i < *total_reservas; i++) {
+        if (strcmp(reservas[i].codigo_voo, codigo_voo) == 0 && reservas[i].numero_assento == numero_assento) {
+            encontrado = 1;
+
+            // Liberar o assento
+            for (int j = 0; j < total_assentos; j++) {
+                if (strcmp(assentos[j].codigo_voo, codigo_voo) == 0 && assentos[j].numero_assento == numero_assento) {
+                    assentos[j].status = 1;
+                    printf("Assento %d do voo %s foi liberado com sucesso.\n", numero_assento, codigo_voo);
+                    break;
+                } 
+            }
+
+            // Calcula o valor do assento a ser pago
+            for (int k = 0; k < total_voos; k++) {
+                if (strcmp(voos[k].codigo_voo, codigo_voo) == 0) {
+                    printf("Valor total a ser pago: R$%d\n", voos[k].tarifa);
+                    break;
+                }
+            }
+
+            // Remove a reserva
+            for (int j = i; j < *total_reservas - 1; j++) {
+                reservas[j] = reservas[j + 1];
+            }
+
+            (*total_reservas)--;
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        printf(" A reserva não foi encontrada para o assento %d no voo %s.\n", numero_assento, codigo_voo);
+    }
+}
+
+int main() {
+    // exeplos(lembrar de apagar)
+    dados_assento assentos[MAX_ASSENTOS] ;
+    dados_voo voos = {
+        {"AB123", 500},
+        {"CD456", 300}
+    };
+    dados_reserva reservas[MAX_RESERVAS] = {
+        {"AB123", 1, "P001"},
+        {"AB123", 2, "P002"},
+        {"CD456", 1, "P003"}
+    };
+
+    int total_assentos = 3;
+    int total_reservas = 3;
+    // apagar ate aqui 
+
+    BaixaReserva(assentos, total_assentos, voos, 2, reservas, &total_reservas);
+
+    return 0;
+}
